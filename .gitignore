@@ -1,0 +1,91 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# next.js
+/.next/
+/out/
+/.swc/
+
+# production
+/build
+
+# misc
+.DS_Store
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+tmp/
+
+# generated files
+lib/types/integration.ts
+lib/codegen-registry.ts
+lib/step-registry.ts
+lib/output-display-configs.ts
+
+# ---------------------------------------------------------------------------
+# Sensitive information (agent workflow starter template)
+# Keep secrets, credentials, and local auth material out of the repo.
+# ---------------------------------------------------------------------------
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+.env*.local
+
+# Credentials & API keys (file names only — not source like credentials.ts)
+**/credentials.json
+**/secrets.json
+**/service-account*.json
+**/*-credentials.json
+**/*_credentials.json
+**/api-keys.json
+**/apikeys.json
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+
+# Auth / session / local secrets
+*.secret
+auth.json
+.secrets/
+/secrets/
+/credentials/
+
+# Local IDE / agent runtime (may contain tokens)
+.cursor/mcp.json
+.cursor/*.local.*
