@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: graphitti-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: workflow_builder
+    volumes:
+      - graphitti_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  graphitti_postgres_data:

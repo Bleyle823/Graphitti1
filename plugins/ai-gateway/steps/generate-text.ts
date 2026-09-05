@@ -1,7 +1,11 @@
 import "server-only";
 
-import { createGateway, generateObject, generateText } from "ai";
+import { generateObject, generateText } from "ai";
 import { z } from "zod";
+import {
+  createAiLanguageModel,
+  getModelString,
+} from "@/lib/ai/provider";
 import { fetchCredentials } from "@/lib/credential-fetcher";
 import { type StepInput, withStepLogging } from "@/lib/steps/step-handler";
 import { getErrorMessageAsync } from "@/lib/utils";
@@ -32,18 +36,8 @@ export type GenerateTextInput = StepInput &
 /**
  * Gets the full model string in provider/model format.
  */
-function getModelString(modelId: string): string {
-  if (modelId.includes("/")) {
-    return modelId;
-  }
-
-  if (modelId.startsWith("claude-")) {
-    return `anthropic/${modelId}`;
-  }
-  if (modelId.startsWith("gpt-") || modelId.startsWith("o1-")) {
-    return `openai/${modelId}`;
-  }
-  return `openai/${modelId}`;
+function resolveModelString(modelId: string): string {
+  return getModelString(modelId);
 }
 
 /**
@@ -94,19 +88,17 @@ async function stepHandler(
     };
   }
 
-  const modelString = getModelString(modelId);
+  const modelString = resolveModelString(modelId);
 
   try {
-    const gateway = createGateway({
-      apiKey,
-    });
+    const model = createAiLanguageModel(modelString, apiKey);
 
     if (input.aiFormat === "object" && input.aiSchema) {
       const schema = JSON.parse(input.aiSchema) as SchemaField[];
       const zodSchema = buildZodSchema(schema);
 
       const { object } = await generateObject({
-        model: gateway(modelString),
+        model,
         prompt: promptText,
         schema: zodSchema,
       });
@@ -115,7 +107,7 @@ async function stepHandler(
     }
 
     const { text } = await generateText({
-      model: gateway(modelString),
+      model,
       prompt: promptText,
     });
 

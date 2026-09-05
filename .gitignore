@@ -50,7 +50,7 @@ lib/step-registry.ts
 lib/output-display-configs.ts
 
 # ---------------------------------------------------------------------------
-# Sensitive information (agent workflow starter template)
+# Sensitive information
 # Keep secrets, credentials, and local auth material out of the repo.
 # ---------------------------------------------------------------------------
 
@@ -60,6 +60,11 @@ lib/output-display-configs.ts
 !.env.example
 !.env.*.example
 .env*.local
+.envrc
+.env.production
+.env.development
+.env.staging
+.env.test
 
 # Credentials & API keys (file names only — not source like credentials.ts)
 **/credentials.json
@@ -69,23 +74,42 @@ lib/output-display-configs.ts
 **/*_credentials.json
 **/api-keys.json
 **/apikeys.json
+**/*token*.json
+**/*secret*.json
 *.key
 *.pem
 *.p12
 *.pfx
 *.crt
+*.cer
+*.der
 id_rsa
 id_rsa.*
+id_dsa
+id_dsa.*
 id_ed25519
 id_ed25519.*
+id_ecdsa
+id_ecdsa.*
 
-# Auth / session / local secrets
+# Auth / session / wallet / local secrets
 *.secret
 auth.json
 .secrets/
 /secrets/
 /credentials/
+/private/
+*.wallet
+wallet.json
+**/wallet-auth*
+**/privy*.json
 
 # Local IDE / agent runtime (may contain tokens)
 .cursor/mcp.json
 .cursor/*.local.*
+.vscode/*.local.json
+
+# OS / editor backup of secrets
+*.env.bak
+*.env.backup
+*.env.old

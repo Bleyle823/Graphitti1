@@ -1,9 +1,7 @@
 import "server-only";
 
-import {
-  createGateway,
-  experimental_generateImage as generateImage,
-} from "ai";
+import { experimental_generateImage as generateImage } from "ai";
+import { createAiImageModel } from "@/lib/ai/provider";
 import { fetchCredentials } from "@/lib/credential-fetcher";
 import { type StepInput, withStepLogging } from "@/lib/steps/step-handler";
 import { getErrorMessageAsync } from "@/lib/utils";
@@ -51,12 +49,8 @@ async function stepHandler(
   }
 
   try {
-    const gateway = createGateway({
-      apiKey,
-    });
     const result = await generateImage({
-      // biome-ignore lint/suspicious/noExplicitAny: AI gateway model ID is dynamic
-      model: gateway.imageModel(modelId as any),
+      model: createAiImageModel(modelId, apiKey),
       prompt: promptText,
       size: "1024x1024",
     });

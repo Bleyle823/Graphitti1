@@ -1,4 +1,5 @@
-import { createGateway, generateText } from "ai";
+import { generateText } from "ai";
+import { createAiLanguageModel } from "@/lib/ai/provider";
 
 export async function testAiGateway(credentials: Record<string, string>) {
   try {
@@ -11,11 +12,8 @@ export async function testAiGateway(credentials: Record<string, string>) {
       };
     }
 
-    // Try a simple text generation to verify the API key works
-    const gateway = createGateway({ apiKey });
-
     await generateText({
-      model: gateway("openai/gpt-4o-mini"),
+      model: createAiLanguageModel("openai/gpt-4o-mini", apiKey),
       prompt: "Say 'test' if you can read this.",
     });
 

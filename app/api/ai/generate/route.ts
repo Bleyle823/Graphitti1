@@ -1,5 +1,10 @@
 import { streamText } from "ai";
 import { NextResponse } from "next/server";
+import {
+  createAiLanguageModel,
+  getAiApiKey,
+  getWorkflowModel,
+} from "@/lib/ai/provider";
 import { auth } from "@/lib/auth";
 import { generateAIActionPrompts } from "@/plugins";
 
@@ -266,12 +271,13 @@ export async function POST(request: Request) {
       );
     }
 
-    const apiKey = process.env.AI_GATEWAY_API_KEY || process.env.OPENAI_API_KEY;
+    const apiKey = getAiApiKey();
 
     if (!apiKey) {
       return NextResponse.json(
         {
-          error: "AI API key not configured on server. Please contact support.",
+          error:
+            "OpenRouter API key not configured. Set OPENROUTER_API_KEY or AI_GATEWAY_API_KEY.",
         },
         { status: 500 }
       );
@@ -325,7 +331,7 @@ Example: If user says "connect node A to node B", output:
     }
 
     const result = streamText({
-      model: "openai/gpt-5.1-instant",
+      model: createAiLanguageModel(getWorkflowModel(), apiKey),
       system: getSystemPrompt(),
       prompt: userPrompt,
     });
